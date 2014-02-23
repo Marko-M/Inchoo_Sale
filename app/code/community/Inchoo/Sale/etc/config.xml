@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+* Inchoo
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Please do not edit or add to this file if you wish to upgrade
+* Magento or this extension to newer versions in the future.
+** Inchoo *give their best to conform to
+* "non-obtrusive, best Magento practices" style of coding.
+* However,* Inchoo *guarantee functional accuracy of
+* specific extension behavior. Additionally we take no responsibility
+* for any possible issue(s) resulting from extension usage.
+* We reserve the full right not to provide any kind of support for our free extensions.
+* Thank you for your understanding.
+*
+* @category Inchoo
+* @package Sale
+* @author Marko Martinović <marko.martinovic@inchoo.net>
+* @copyright Copyright (c) Inchoo (http://inchoo.net/)
+* @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+*/
+-->
+
+<config>
+    <modules>
+        <Inchoo_Sale>
+            <version>0.1.0</version>
+        </Inchoo_Sale>
+    </modules>
+    <global>
+        <models>
+            <inchoo_sale>
+                <class>Inchoo_Sale_Model</class>
+                <resourceModel>inchoo_sale_resource</resourceModel>
+            </inchoo_sale>
+            <inchoo_sale_resource>
+                <class>Inchoo_Sale_Model_Resource</class>
+                <entities>
+                    <category>
+                        <table>inchoo_sale_categories</table>
+                    </category>
+                </entities>
+            </inchoo_sale_resource>
+        </models>
+        <blocks>
+            <inchoo_sale>
+                <class>Inchoo_Sale_Block</class>
+            </inchoo_sale>
+        </blocks>
+        <helpers>
+            <inchoo_sale>
+                <class>Inchoo_Sale_Helper</class>
+            </inchoo_sale>
+        </helpers>
+        <resources>
+            <inchoo_sale_setup>
+                <setup>
+                    <module>Inchoo_Sale</module>
+                    <class>Inchoo_Sale_Model_Resource_Setup</class>
+                </setup>
+            </inchoo_sale_setup>
+        </resources>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <inchoo_sale before="Mage_Adminhtml">Inchoo_Sale_Adminhtml</inchoo_sale>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <inchoo_sale>
+                    <file>inchoo_sale.xml</file>
+                </inchoo_sale>
+            </updates>
+        </layout>
+    </adminhtml>
+    <crontab>
+        <jobs>
+            <inchoo_sale_update_sale>
+                <schedule><cron_expr>0 * * * *</cron_expr></schedule>
+                <run><model>inchoo_sale/observer::updateSale</model></run>
+            </inchoo_sale_update_sale>
+        </jobs>
+    </crontab>
+</config>
