@@ -90,7 +90,7 @@ class Inchoo_Sale_Model_Observer
 
         /*
          * We use raw SQL queries here instead of fetching collection with
-         * $rootCategory->getChildProducts or similar because in this case query
+         * $rootCategory->getProductCollection() or similar because in this case query
          * produced would depend on things like is flat catalog product/category
          * enabled or is the current store admin or not. This way code can be called
          * from wherever.
