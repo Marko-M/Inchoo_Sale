@@ -129,22 +129,37 @@ class Inchoo_Sale_Adminhtml_Inchoo_SaleController extends Mage_Adminhtml_Control
                     // If category mapping exists and we're about to change it
                     $saleCategory->addData($data);
                 }
-                
+
                 $saleCategory->save();
             }
 
             Mage::getSingleton('core/session')
-                ->addSuccess($this->__('Sale category successfully updated.'));
-
-            $this->_redirect('*/*/');
-
+                ->addSuccess($this->__('Sale category configuration successfully updated.'));
         } catch (Exception $e) {
             // Handle error conditions
             Mage::logException($e);
             Mage::getSingleton('core/session')
                 ->addError($e->getMessage());
-            $this->_redirect('*/*/');
         }
+        $this->_redirect('*/*/');
+    }
+
+    public function updateAction()
+    {
+        try {
+            Mage::getModel('inchoo_sale/observer')
+                ->updateSale();
+
+            Mage::getSingleton('core/session')
+                ->addSuccess($this->__('Sale categories successfully updated.'));
+        } catch (Exception $e) {
+            // Handle error conditions
+            Mage::logException($e);
+            Mage::getSingleton('core/session')
+                ->addError($e->getMessage());
+        }
+
+        $this->_redirect('*/*/');
     }
 
 }
