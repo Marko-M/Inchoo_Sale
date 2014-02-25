@@ -37,7 +37,7 @@
 <config>
     <modules>
         <Inchoo_Sale>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </Inchoo_Sale>
     </modules>
     <global>

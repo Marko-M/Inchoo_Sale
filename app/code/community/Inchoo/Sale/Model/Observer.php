@@ -66,12 +66,11 @@ class Inchoo_Sale_Model_Observer
         $productIds = $this->_getSaleProductIds($store);
 
         $category = Mage::getModel('catalog/category')
-            ->setStoreId($store->getId())
             ->load($saleCategoryId);
 
         $category->setPostedProducts(array_flip($productIds));
 
-        try{
+        try {
             $category->save();
         } catch (Exception $e) {
             Mage::logException($e);
@@ -82,12 +81,11 @@ class Inchoo_Sale_Model_Observer
      * Get product ids of sale products for a store
      *
      * @param Mage_Core_Model_Store $store
-     * @return type
+     * @return array
      */
     protected function _getSaleProductIds($store)
     {
         $rootCategory = Mage::getModel('catalog/category')
-            ->setStoreId($store->getId())
             ->load($store->getRootCategoryId());
 
         $collection = $rootCategory->getProductCollection()
