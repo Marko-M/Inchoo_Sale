@@ -42,6 +42,11 @@ extends Mage_Adminhtml_Block_Widget_Grid_Container
         $this->_controller = 'adminhtml_sale';
         $this->_headerText = $this->__('Sale Categories');
         $this->_removeButton('add');
+
+        $this->_addButton('inchoo_sale_update', array(
+            'label' => $this->__('Update Sale'),
+            'onclick' => "setLocation('{$this->getUrl('*/inchoo_sale/update')}')",
+        ));
     }
 
 }
