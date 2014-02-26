@@ -85,6 +85,7 @@ class Inchoo_Sale_Model_Observer
      */
     protected function _getSaleProductIds($store)
     {
+
         $rootCategory = Mage::getModel('catalog/category')
             ->load($store->getRootCategoryId());
 
@@ -96,10 +97,10 @@ class Inchoo_Sale_Model_Observer
          * from wherever.
          */
         $coreResource = Mage::getSingleton('core/resource');
+        $coreRead = $coreResource->getConnection('core_read');
 
-        $collection =
-            Mage::getSingleton('core/resource')
-            ->getConnection('core_read')
+       $collection =
+            $coreRead
             ->select()
             ->from(
                 array(
@@ -108,37 +109,27 @@ class Inchoo_Sale_Model_Observer
             )
             ->reset(Zend_Db_Select::COLUMNS)
             ->columns('e.entity_id')
-
-            /* We need category id's to filter by root category. Reason to use
-             * _index table is because catalog_category_product contains only
-             * direct descendant product mappings for each category (e.g. no root).
-             */
             ->join(
                 array(
-                    'catalog_category_product_index'=>
-                        $coreResource->getTableName('catalog/category_product_index')
+                    'cat_pro'=>
+                        $coreResource->getTableName('catalog/category_product')
                 ),
-                'e.entity_id = catalog_category_product_index.product_id',
+                '`cat_pro`.`product_id` = `e`.`entity_id`'
+                    . " AND `cat_pro`.`category_id` = {$rootCategory->getId()} ",
                 null
             )
-
-            /* We join to catalogrule_product_price to get items under catalog
-             * price rules.
-             */
             ->join(
                 array(
-                    'catalogrule_product_price'=>
+                    'catalogrule_pp'=>
                         $coreResource->getTableName('catalogrule/rule_product_price')
                 ),
-                '`e`.`entity_id` = `catalogrule_product_price`.`product_id`',
+                '`catalogrule_pp`.`product_id` = `cat_pro`.`product_id`',
                 null
             )
-            ->where("`category_id`={$rootCategory->getId()}")
             ->group('e.entity_id');
 
-        Mage::log($collection->assemble());
-
-        return $coreResource->fetchCol($collection);
+        return $coreRead
+            ->fetchCol($collection);
     }
 
 }
