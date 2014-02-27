@@ -48,6 +48,12 @@ class Inchoo_Sale_Model_Observer
             $storeGroupDefaultStore = Mage::app()->getGroup($storeGroupId)
                 ->getDefaultStore();
 
+            /**
+             * Note: There is a Magento bug where Exception with message
+             * '$_FILES array is empty' is logged when saving category programatically.
+             *
+             * http://www.magentocommerce.com/bug-tracking/issue/?issue=11597
+             */
             $this->_updateSale(
                 $storeGroupDefaultStore,
                 $saleCategory->getSaleCategoryId()
@@ -99,7 +105,7 @@ class Inchoo_Sale_Model_Observer
         $coreResource = Mage::getSingleton('core/resource');
         $coreRead = $coreResource->getConnection('core_read');
 
-       $collection =
+        $collection =
             $coreRead
             ->select()
             ->from(
@@ -114,18 +120,18 @@ class Inchoo_Sale_Model_Observer
                     'cat_pro'=>
                         $coreResource->getTableName('catalog/category_product')
                 ),
-                '`cat_pro`.`product_id` = `e`.`entity_id`'
-                    . " AND `cat_pro`.`category_id` = {$rootCategory->getId()} ",
+                '`cat_pro`.`product_id` = `e`.`entity_id`',
                 null
             )
             ->join(
                 array(
-                    'catalogrule_pp'=>
+                    'catrule_pp'=>
                         $coreResource->getTableName('catalogrule/rule_product_price')
                 ),
-                '`catalogrule_pp`.`product_id` = `cat_pro`.`product_id`',
+                '`catrule_pp`.`product_id` = `cat_pro`.`product_id`',
                 null
             )
+            ->where("`cat_pro`.`category_id` IN ({$rootCategory->getAllChildren()})")
             ->group('e.entity_id');
 
         return $coreRead
