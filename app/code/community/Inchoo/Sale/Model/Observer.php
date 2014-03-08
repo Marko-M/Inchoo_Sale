@@ -97,10 +97,8 @@ class Inchoo_Sale_Model_Observer
 
         /*
          * We use raw SQL queries here instead of fetching collection with
-         * $rootCategory->getProductCollection() or similar because in this case query
-         * produced would depend on things like is flat catalog product/category
-         * enabled or is the current store admin or not. This way code can be called
-         * from wherever.
+         * $rootCategory->getProductCollection() because we want to bypass
+         * index and flat tables.
          */
         $coreResource = Mage::getSingleton('core/resource');
         $coreRead = $coreResource->getConnection('core_read');

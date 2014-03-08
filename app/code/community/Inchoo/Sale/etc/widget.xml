@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+* Inchoo
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Please do not edit or add to this file if you wish to upgrade
+* Magento or this extension to newer versions in the future.
+** Inchoo *give their best to conform to
+* "non-obtrusive, best Magento practices" style of coding.
+* However,* Inchoo *guarantee functional accuracy of
+* specific extension behavior. Additionally we take no responsibility
+* for any possible issue(s) resulting from extension usage.
+* We reserve the full right not to provide any kind of support for our free extensions.
+* Thank you for your understanding.
+*
+* @category Inchoo
+* @package Sale
+* @author Marko Martinović <marko.martinovic@inchoo.net>
+* @copyright Copyright (c) Inchoo (http://inchoo.net/)
+* @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+*/
+-->
+
+<widgets>
+    <inchoo_sale type="inchoo_sale/product_widget_sale" translate="name description" module="inchoo_sale">
+        <name>Catalog Sale Products List</name>
+        <description>List of Products that are on sale by Catalog Price Rules</description>
+        <is_email_compatible>1</is_email_compatible>
+        <parameters>
+            <display_type translate="label description">
+                <required>1</required>
+                <visible>1</visible>
+                <label>Display Type</label>
+                <type>select</type>
+                <value>sale_products</value>
+                <values>
+                    <item translate="label">
+                        <value>sale_products</value>
+                        <label>Sale products</label>
+                    </item>
+                </values>
+                <description>Sale products - list of Products that are on sale by Catalog Price Rules</description>
+            </display_type>
+            <show_pager translate="label">
+                <visible>1</visible>
+                <label>Display Page Control</label>
+                <type>select</type>
+                <source_model>adminhtml/system_config_source_yesno</source_model>
+            </show_pager>
+            <products_per_page translate="label">
+                <required>1</required>
+                <visible>1</visible>
+                <value>5</value>
+                <label>Number of Products per Page</label>
+                <type>text</type>
+                <depends><show_pager><value>1</value></show_pager></depends>
+            </products_per_page>
+            <products_count translate="label">
+                <required>1</required>
+                <visible>1</visible>
+                <value>10</value>
+                <label>Number of Products to Display</label>
+                <type>text</type>
+            </products_count>
+            <template>
+                <required>1</required>
+                <visible>1</visible>
+                <label>Template</label>
+                <type>select</type>
+                <value>inchoo_sale/catalog/product/widget/sale/content/sale_grid.phtml</value>
+                <values>
+                    <default translate="label">
+                        <value>inchoo_sale/catalog/product/widget/sale/content/sale_grid.phtml</value>
+                        <label>Sale Products Grid Template</label>
+                    </default>
+                    <list translate="label">
+                        <value>inchoo_sale/catalog/product/widget/sale/content/sale_list.phtml</value>
+                        <label>Sale Products List Template</label>
+                    </list>
+                    <list_default translate="label">
+                        <value>inchoo_sale/catalog/product/widget/sale/column/sale_default_list.phtml</value>
+                        <label>Sale Products Images and Names Template</label>
+                    </list_default>
+                    <list_names translate="label">
+                        <value>inchoo_sale/catalog/product/widget/sale/column/sale_names_list.phtml</value>
+                        <label>Sale Products Names Only Template</label>
+                    </list_names>
+                    <list_images translate="label">
+                        <value>inchoo_sale/catalog/product/widget/sale/column/sale_images_list.phtml</value>
+                        <label>Sale Products Images Only Template</label>
+                    </list_images>                     
+                </values>
+            </template>
+            <cache_lifetime translate="label description">
+                <label>Cache Lifetime (Seconds)</label>
+                <description>86400 by default, if not set. To refresh instantly, Clear the Blocks HTML Output Cache.</description>
+                <visible>1</visible>
+                <type>text</type>
+            </cache_lifetime>
+        </parameters>
+    </inchoo_sale>
+</widgets>
