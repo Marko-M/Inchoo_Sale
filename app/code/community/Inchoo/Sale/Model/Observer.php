@@ -48,12 +48,6 @@ class Inchoo_Sale_Model_Observer
             $storeGroupDefaultStore = Mage::app()->getGroup($storeGroupId)
                 ->getDefaultStore();
 
-            /**
-             * Note: There is a Magento bug where Exception with message
-             * '$_FILES array is empty' is logged when saving category programatically.
-             *
-             * http://www.magentocommerce.com/bug-tracking/issue/?issue=11597
-             */
             $this->_updateSale(
                 $storeGroupDefaultStore,
                 $saleCategory->getSaleCategoryId()
@@ -77,7 +71,16 @@ class Inchoo_Sale_Model_Observer
         $category->setPostedProducts(array_flip($productIds));
 
         try {
+            /**
+             * Note: There is a Magento bug where Exception with message
+             * '$_FILES array is empty' is logged when saving category programatically.
+             *
+             * http://www.magentocommerce.com/bug-tracking/issue/?issue=11597
+             */            
             $category->save();
+            
+            $this->_clearSaleAttribute($productIds, $store);
+            $this->_setSaleAttribute($productIds, $store);
         } catch (Exception $e) {
             Mage::logException($e);
         }
@@ -134,6 +137,56 @@ class Inchoo_Sale_Model_Observer
 
         return $coreRead
             ->fetchCol($collection);
+    }
+
+    /**
+     * Clears the layered navigation attribute for all not on sale products
+     *
+     * @param array $productIds
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function _clearSaleAttribute($productIds, $store)
+    {
+        $productIds = Mage::getModel('catalog/product')
+            ->getCollection()
+            ->addAttributeToFilter(array(
+                    array(
+                        'attribute' => Inchoo_Sale_Model_Resource_Setup::SALE_CODE,
+                        'nin' => $productIds
+                    )
+                ),
+                null,
+                'left' // Use LEFT JOIN
+            );
+
+        Mage::getSingleton('catalog/product_action')
+            ->updateAttributes(
+                $productIds,
+                array(
+                    Inchoo_Sale_Model_Resource_Setup::SALE_CODE =>
+                        Inchoo_Sale_Model_Eav_Entity_Attribute_Source_Boolean::VALUE_NO
+                ),
+                $store->getId()
+            );
+    }
+
+    /**
+     * Sets the layered navigation attribute for all on sale products
+     *
+     * @param array $productIds
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function _setSaleAttribute($productIds, $store)
+    {
+        Mage::getSingleton('catalog/product_action')
+            ->updateAttributes(
+                $productIds,
+                array(
+                    Inchoo_Sale_Model_Resource_Setup::SALE_CODE =>
+                        Inchoo_Sale_Model_Eav_Entity_Attribute_Source_Boolean::VALUE_YES
+                ),
+                $store->getId()
+        );
     }
 
 }
