@@ -32,8 +32,30 @@
 * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 */
 
-class Inchoo_Sale_Model_Resource_Setup
-extends Mage_Core_Model_Resource_Setup
-{
-    const SALE_CODE = 'inchoo_sale';
+/* @var $installer Mage_Catalog_Model_Resource_Eav_Mysql4_Setup */
+$installer = Mage::getResourceModel('catalog/setup', 'inchoo_sale_setup');
+
+$installer->startSetup();
+if (!$installer->getAttributeId(Mage_Catalog_Model_Product::ENTITY, Inchoo_Sale_Model_Resource_Setup::SALE_CODE)) {
+    $installer->addAttribute(Mage_Catalog_Model_Product::ENTITY, Inchoo_Sale_Model_Resource_Setup::SALE_CODE, array(
+        'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
+        'group' => 'General',
+        'label' => Mage::helper('inchoo_sale')->__('Sale'),
+        'type' => 'int',
+        'input' => 'select',
+        'source' => 'inchoo_sale/eav_entity_attribute_source_boolean',
+        'default' => Inchoo_Sale_Model_Eav_Entity_Attribute_Source_Boolean::VALUE_NO,
+        'required' => false,
+        'visible_on_front'=> false,
+        'is_configurable' => false,
+        'comparable' => false,
+        'visible' => true,
+        'user_defined' => true,
+        'filterable' => true, // Include in layered nav
+        'filterable_in_search' => true, // Include in layered nav
+        'used_in_product_listing' => true, // Include in flat tables
+        'position' => '1'
+    ));
 }
+
+$installer->endSetup();
