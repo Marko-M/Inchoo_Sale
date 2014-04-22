@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout version="0.1.0">
+
+    <catalog_category_layered>
+        <!-- Remove Magento layered navigation -->
+        <remove name="catalog.leftnav"/>
+
+        <!-- Add our layered navigation replacement -->
+        <reference name="left">
+            <block type="inchoo_sale/catalog_layer_view" name="inchoo_sale.catalog.leftnav" after="currency" template="catalog/layer/view.phtml"/>
+        </reference>
+
+    </catalog_category_layered>
+
+    <inchoo_sale_index_index>
+        <update handle="catalog_category_layered"/>
+
+        <!-- Remove Magento layered navigation -->
+        <remove name="catalog.leftnav"/>
+
+        <!-- Remove our layered navigation replacement -->
+        <remove name="inchoo_sale.catalog.leftnav"/>
+
+        <!-- Add sale specific layered navigation -->
+        <reference name="left">
+            <block type="inchoo_sale/catalog_layer_sale" name="inchoo_sale.leftnav" after="currency" template="catalog/layer/view.phtml"/>
+        </reference>
+    </inchoo_sale_index_index>
+
+</layout>

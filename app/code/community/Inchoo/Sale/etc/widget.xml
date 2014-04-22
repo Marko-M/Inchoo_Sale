@@ -35,7 +35,7 @@
 -->
 
 <widgets>
-    <inchoo_sale type="inchoo_sale/product_widget_sale" translate="name description" module="inchoo_sale">
+    <inchoo_sale type="inchoo_sale/catalog_product_widget_sale" translate="name description" module="inchoo_sale">
         <name>Catalog Sale Products List</name>
         <description>List of Products that are on sale by Catalog Price Rules</description>
         <is_email_compatible>1</is_email_compatible>

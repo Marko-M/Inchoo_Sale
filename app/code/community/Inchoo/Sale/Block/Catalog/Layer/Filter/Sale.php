@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Inchoo
 *
@@ -32,40 +31,13 @@
 * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 */
 
-class Inchoo_Sale_Block_Adminhtml_Sale_Configure 
-extends Mage_Adminhtml_Block_Widget_Form_Container
+class Inchoo_Sale_Block_Catalog_Layer_Filter_Sale extends Mage_Catalog_Block_Layer_Filter_Abstract
 {
 
     public function __construct()
     {
-        /*
-         * Path to form is constructed as follows
-         * {$this->_blockGroup . ‘/’ . $this->_controller . ‘_’ . $this->_mode . ‘_form’}
-         */
-        $this->_objectId = 'group_id';
-        $this->_blockGroup = 'inchoo_sale';
-        $this->_controller = 'adminhtml_sale';
-        $this->_mode = 'configure';
-        
         parent::__construct();
-
-        $this->_updateButton('save', 'label', Mage::helper('adminhtml')->__('Save'));
-        $this->_removeButton('delete');
-        $this->_removeButton('reset');
-    }
-
-    public function getHeaderText()
-    {
-        $helper = Mage::helper('inchoo_sale');
-        if (Mage::registry('sale_configuration_data')->getStoreGroupName()) {
-            return $helper->__(
-                'Configure sale category for \'%s\'',
-                $this->escapeHtml(Mage::registry('sale_configuration_data')
-                    ->getStoreGroupName())            );
-        }
-        else {
-            return $helper->__('Configure Sale Category');
-        }
+        $this->_filterModelName = 'inchoo_sale/catalog_layer_filter_sale';
     }
 
 }

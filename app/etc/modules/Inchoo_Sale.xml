@@ -40,9 +40,7 @@
         <active>true</active>
         <codePool>community</codePool>
         <depends>
-            <Mage_Core />
             <Mage_Catalog />
-            <Mage_CatalogRule />
         </depends>
     </Inchoo_Sale>
     </modules>

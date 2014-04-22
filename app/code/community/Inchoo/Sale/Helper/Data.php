@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Inchoo
 *
@@ -35,35 +34,5 @@
 class Inchoo_Sale_Helper_Data
 extends Mage_Core_Helper_Abstract
 {
-
-    /**
-     * Get store group categories by store
-     *
-     * @param int $storeGroupId
-     * @return array
-     */
-    public function getStoreGroupCategories($storeGroupId)
-    {
-        $storeGroup = Mage::app()->getGroup($storeGroupId);
-
-        $storeGroupCategoriesCollection = Mage::getModel('catalog/category')
-            ->getCategories(
-                $storeGroup->getRootCategoryId(),
-                0,
-                true,
-                true
-            );
-
-        $categoriesArray = array();
-
-        foreach ($storeGroupCategoriesCollection as $category) {
-            $categoriesArray[] = array(
-               'label' => $category->getName(),
-               'value' => $category->getEntityId()
-            );
-        }
-
-        return $categoriesArray;
-    }
 
 }

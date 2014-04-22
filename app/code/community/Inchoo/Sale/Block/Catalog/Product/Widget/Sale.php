@@ -1,6 +1,37 @@
 <?php
+/**
+* Inchoo
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the Open Software License (OSL 3.0)
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://opensource.org/licenses/osl-3.0.php
+* If you did not receive a copy of the license and are unable to
+* obtain it through the world-wide-web, please send an email
+* to license@magentocommerce.com so we can send you a copy immediately.
+*
+* DISCLAIMER
+*
+* Please do not edit or add to this file if you wish to upgrade
+* Magento or this extension to newer versions in the future.
+** Inchoo *give their best to conform to
+* "non-obtrusive, best Magento practices" style of coding.
+* However,* Inchoo *guarantee functional accuracy of
+* specific extension behavior. Additionally we take no responsibility
+* for any possible issue(s) resulting from extension usage.
+* We reserve the full right not to provide any kind of support for our free extensions.
+* Thank you for your understanding.
+*
+* @category Inchoo
+* @package Sale
+* @author Marko Martinović <marko.martinovic@inchoo.net>
+* @copyright Copyright (c) Inchoo (http://inchoo.net/)
+* @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+*/
 
-class Inchoo_Sale_Block_Product_Widget_Sale
+class Inchoo_Sale_Block_Catalog_Product_Widget_Sale
 extends Mage_Catalog_Block_Product_Abstract
 implements Mage_Widget_Block_Interface
 {
@@ -61,28 +92,28 @@ implements Mage_Widget_Block_Interface
 
     protected function _getSaleProductCollection()
     {
-        /** @var $collection Mage_Catalog_Model_Resource_Product_Collection */
-        $collection = Mage::getResourceModel('catalog/product_collection');
-        
-        $inchooSaleCategory = Mage::getModel('inchoo_sale/category')
-            ->loadByStoreGroupId(Mage::app()->getGroup()->getId());
-        
-        if(!$inchooSaleCategory->getSaleCategoryId()) {
-            return new Varien_Data_Collection();
-        }
-        
-        $saleCategory = Mage::getModel('catalog/category')
-            ->load($inchooSaleCategory->getSaleCategoryId());
+        $rootCategory = Mage::getModel('catalog/category')
+            ->load(Mage::app()->getStore()->getRootCategoryId());
+        /* @var $rootCategory Mage_Catalog_Model_Category */
+                
+        $productCollection = $rootCategory->getProductCollection();
+        /* @var $productCollection Mage_Catalog_Model_Resource_Category_Collection */
 
-        $collection = $this->_addProductAttributesAndPrices($collection)
-            ->addStoreFilter()
-            ->addCategoryFilter($saleCategory)
+        $productCollection = $this->_addProductAttributesAndPrices($productCollection)
             ->addAttributeToSort('created_at', 'desc')
             ->setPageSize($this->getProductsCount())
-            ->setCurPage(1)
-        ;
+            ->setCurPage(1);
+        
+        Mage::getSingleton('catalog/product_status')
+            ->addVisibleFilterToCollection($productCollection);
+        Mage::getSingleton('catalog/product_visibility')
+            ->addVisibleInCatalogFilterToCollection($productCollection);        
+        
+        $productCollection
+            ->getSelect()
+            ->where('price_index.final_price < price_index.price');        
 
-        return $collection;
+        return $productCollection;
     }
 
     /**
