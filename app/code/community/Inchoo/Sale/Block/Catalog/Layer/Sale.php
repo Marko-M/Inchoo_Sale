@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Inchoo
 *
@@ -32,19 +31,20 @@
 * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 */
 
-class Inchoo_Sale_Block_Adminhtml_Sale_Renderer_Category_Name extends
-Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
+class Inchoo_Sale_Block_Catalog_Layer_Sale extends Mage_Catalog_Block_Layer_View
 {
-    
-    public function render(Varien_Object $row)
-    {
-        $saleCategoryName = $row->getData('sale_category_name');
 
-        if($saleCategoryName) {
-            return $saleCategoryName;
-        } else {
-            return Mage::helper('inchoo_sale')->__('Not configured');
-        }
+    protected function _construct()
+    {
+        parent::_construct();
+
+        /* To get picked up by Mage_Catalog_Product_List::getLayer() */
+        Mage::register('current_layer', $this->getLayer(), true);
     }
-    
+
+    public function getLayer()
+    {
+        return Mage::getSingleton('inchoo_sale/catalog_layer');
+    }
+
 }

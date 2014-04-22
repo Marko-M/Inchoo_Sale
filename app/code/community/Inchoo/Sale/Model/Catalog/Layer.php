@@ -1,5 +1,4 @@
 <?php
-
 /**
 * Inchoo
 *
@@ -32,21 +31,18 @@
 * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
 */
 
-class Inchoo_Sale_Block_Adminhtml_Sale
-extends Mage_Adminhtml_Block_Widget_Grid_Container
+class Inchoo_Sale_Model_Catalog_Layer extends Mage_Catalog_Model_Layer
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->_blockGroup = 'inchoo_sale';
-        $this->_controller = 'adminhtml_sale';
-        $this->_headerText = $this->__('Sale Categories');
-        $this->_removeButton('add');
 
-        $this->_addButton('inchoo_sale_update', array(
-            'label' => $this->__('Update Sale'),
-            'onclick' => "setLocation('{$this->getUrl('*/inchoo_sale/update')}')",
-        ));
+    public function prepareProductCollection($collection)
+    {
+        parent::prepareProductCollection($collection);
+
+        $collection
+            ->getSelect()
+            ->where('price_index.final_price < price_index.price');
+
+        return $this;
     }
 
 }

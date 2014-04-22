@@ -37,23 +37,14 @@
 <config>
     <modules>
         <Inchoo_Sale>
-            <version>0.3.0</version>
+            <version>0.4.0</version>
         </Inchoo_Sale>
     </modules>
     <global>
         <models>
             <inchoo_sale>
                 <class>Inchoo_Sale_Model</class>
-                <resourceModel>inchoo_sale_resource</resourceModel>
             </inchoo_sale>
-            <inchoo_sale_resource>
-                <class>Inchoo_Sale_Model_Resource</class>
-                <entities>
-                    <category>
-                        <table>inchoo_sale_categories</table>
-                    </category>
-                </entities>
-            </inchoo_sale_resource>
         </models>
         <blocks>
             <inchoo_sale>
@@ -65,27 +56,8 @@
                 <class>Inchoo_Sale_Helper</class>
             </inchoo_sale>
         </helpers>
-        <resources>
-            <inchoo_sale_setup>
-                <setup>
-                    <module>Inchoo_Sale</module>
-                    <class>Inchoo_Sale_Model_Resource_Setup</class>
-                </setup>
-            </inchoo_sale_setup>
-        </resources>
     </global>
-    <admin>
-        <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <inchoo_sale before="Mage_Adminhtml">Inchoo_Sale_Adminhtml</inchoo_sale>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
-    <adminhtml>
+    <frontend>
         <layout>
             <updates>
                 <inchoo_sale>
@@ -93,13 +65,14 @@
                 </inchoo_sale>
             </updates>
         </layout>
-    </adminhtml>
-    <crontab>
-        <jobs>
-            <inchoo_sale_update_sale>
-                <schedule><cron_expr>0 * * * *</cron_expr></schedule>
-                <run><model>inchoo_sale/observer::updateSale</model></run>
-            </inchoo_sale_update_sale>
-        </jobs>
-    </crontab>
+        <routers>
+            <inchoo_sale>
+                <use>standard</use>
+                <args>
+                    <module>Inchoo_Sale</module>
+                    <frontName>sale</frontName>
+                </args>
+            </inchoo_sale>
+        </routers>
+    </frontend>
 </config>
