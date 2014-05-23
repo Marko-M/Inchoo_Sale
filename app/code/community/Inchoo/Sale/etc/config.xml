@@ -37,7 +37,7 @@
 <config>
     <modules>
         <Inchoo_Sale>
-            <version>0.4.0</version>
+            <version>0.4.1</version>
         </Inchoo_Sale>
     </modules>
     <global>
@@ -74,5 +74,15 @@
                 </args>
             </inchoo_sale>
         </routers>
+        <!-- Enterprise_PageCache support -->
+        <cache>
+            <requests>
+                <inchoo_sale>
+                    <index>
+                        <view>enterprise_pagecache/processor_category</view>
+                    </index>
+                </catalog>
+            </requests>
+        </cache>        
     </frontend>
 </config>
