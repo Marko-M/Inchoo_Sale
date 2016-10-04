@@ -81,7 +81,7 @@
                     <index>
                         <view>enterprise_pagecache/processor_category</view>
                     </index>
-                </catalog>
+                </inchoo_sale>
             </requests>
         </cache>        
     </frontend>
